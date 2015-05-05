@@ -1,0 +1,15 @@
+Intelbras company uses a protocol called ISECnet to communicate
+between their security products like alarm panels, DVRs, NVRs,
+etc. Yet they do not release any public information regarding
+the protocol, if asked, support will send documentation as SDK.
+
+This plugin decodes ISECnet protocol used to communicate with
+Intelbras alarm panels (at the momento of this writing there
+are two models available the AMT-2018E and AMT-2018EG).
+
+This software is released under GPL by author but he is not
+in charge nor can be responsible for any protocol change or
+any consequence this dissection can cause. Use it only for
+research purposes and AT YOUR OWN RISK
+
+The author is Josenivaldo Benito Junior <jrbenito@benito.qsl.br>
