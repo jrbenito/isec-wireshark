@@ -8,8 +8,11 @@
 
 #define ISEC_PORT 9009
 
+static dissector_handle_t isecnet_handle;
+
 /* Protocol ISECnet (isn) */
 static int proto_isecnet = -1;
+
 static int hf_isn_length = -1;
 static int hf_isn_cmd = -1;
 static int hf_isn_payload = -1;
@@ -45,7 +48,7 @@ static void dissect_isecnet(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree)
 }
 
 /*
- * Register the protocol within Wireshark
+ * Register the protocol with Wireshark
  */
 void proto_register_isecnet(void)
 {
@@ -80,15 +83,28 @@ void proto_register_isecnet(void)
 		"isecnet"           /* abbrev     */
 	);
 
+	isecnet_handle = new_register_dissector("isecnet", dissect_isecnet, proto_isecnet);
+
 	proto_register_field_array(proto_isecnet, hf_isn, array_length(hf_isn));
 	proto_register_subtree_array(ett, array_length(ett));
 }
 
+/*
+ * Dissector Handoff
+ */
 void proto_reg_handoff_isecnet(void)
 {
-	static dissector_handle_t isecnet_handle;
-
-	isecnet_handle = create_dissector_handle(dissect_isecnet, proto_isecnet);
 	dissector_add_handle("tcp.port", isecnet_handle);
 }
-
+/*
+ * Editor modelines  -  http://www.wireshark.org/tools/modelines.html
+ *
+ * Local variables:
+ * c-basic-offset: 2
+ * tab-width: 8
+ * indent-tabs-mode: nil
+ * End:
+ *
+ * vi: set shiftwidth=2 tabstop=8 expandtab:
+ * :indentSize=2:tabSize=8:noTabs=true:
+ */
