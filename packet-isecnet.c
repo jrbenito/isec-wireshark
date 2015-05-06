@@ -75,7 +75,7 @@ void proto_register_isecnet(void)
 	};
 	
 	proto_isecnet = proto_register_protocol (
-		"ISECnet Protocol", /* name       */
+		"Intelbras Security Protocol", /* name       */
 		"ISECnet",          /* short name */
 		"isecnet"           /* abbrev     */
 	);
@@ -89,6 +89,6 @@ void proto_reg_handoff_isecnet(void)
 	static dissector_handle_t isecnet_handle;
 
 	isecnet_handle = create_dissector_handle(dissect_isecnet, proto_isecnet);
-	dissector_add_uint("tcp.port", ISEC_PORT, isecnet_handle);
+	dissector_add_handle("tcp.port", isecnet_handle);
 }
 
