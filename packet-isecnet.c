@@ -153,8 +153,8 @@ void proto_register_isecnet(void)
 	/* Register configuration preferences */
 	isecnet_module = prefs_register_protocol(proto_isecnet, NULL);
 	prefs_register_bool_preference(isecnet_module, "summary_in_tree",
-			"Show TCP summary in protocol tree",
-			"Whether the TCP summary line should be shown in the protocol tree",
+			"Show ISECnet summary in protocol tree",
+			"Whether more information should be shown in the protocol tree",
 			&isecnet_summary_in_tree);
 
 }
