@@ -23,6 +23,8 @@ static int hf_isn_payload = -1;
 static int hf_isn_chksum = -1;
 #define ISN_CHKS_SZ 1
 
+#define ISN_HDR_SZ (ISN_CHKS_SZ + ISN_LEN_SZ)
+
 static gint ett_isn = -1;
 
 /* Reassemble SMPP TCP segments */
@@ -32,7 +34,7 @@ static guint get_isecnet_pdu_len(packet_info *pinfo _U_, tvbuff_t *tvb, int offs
 {
 	guint msg_len = 0;
 
-	msg_len = (guint)tvb_get_guint8(tvb,offset) + ISN_LEN_SZ + ISN_CHKS_SZ;
+	msg_len = (guint)tvb_get_guint8(tvb,offset) + ISN_HDR_SZ;
 
 	return msg_len;
 }
