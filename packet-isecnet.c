@@ -103,7 +103,8 @@ static int dissect_isecnet(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree, 
 	col_set_str(pinfo->cinfo, COL_PROTOCOL, "ISECnet");
 	/* Clear out stuff in the info column */
 	col_clear(pinfo->cinfo,COL_INFO);
-	col_add_fstr(pinfo->cinfo, COL_INFO,"ISECNet, Frame=%d, Cmd=%X",isn_frame_length,isn_cmd);
+	col_set_str(pinfo->cinfo, COL_INFO, try_val_to_str((guint32) isn_cmd, isn_cmd_names));
+	col_append_fstr(pinfo->cinfo, COL_INFO,", Frame=%d, Cmd=%X, Data=%d",isn_frame_length,isn_cmd,isn_data_length);
 
 	if (tree) { /* we are being asked for details */
 
