@@ -47,6 +47,7 @@ static const value_string isn_cmd_names[] = {
         { 0xFE, "ACK" },
 	{ 0, NULL }
 };
+#define UNKNOWN_STR "unknown"
 
 /* Reassemble SMPP TCP segments */
 static gboolean reassemble_isecnet_over_tcp = TRUE;
@@ -105,15 +106,17 @@ static int dissect_isecnet(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree, 
 	if (isn_frame_length == ISN_SHORTFRM_SZ) { /* short frame */
 
                isn_cmd = tvb_get_guint8(tvb, offset);
-               offset++;
 
-               col_set_str(pinfo->cinfo, COL_INFO, try_val_to_str((guint32) isn_cmd, isn_cmd_names));
+               col_set_str(pinfo->cinfo, COL_INFO, val_to_str_const((guint32) isn_cmd, isn_cmd_names,UNKNOWN_STR));
                col_append_fstr(pinfo->cinfo, COL_INFO,", Frame=%d, Cmd=%X",isn_frame_length,isn_cmd);
 
                if (tree) { /* we are being asked for details */
                         if (isecnet_summary_in_tree) {
-                                 proto_item_append_text(ti,", Frame: %d, Cmd: %x",
-                                                        isn_frame_length, isn_cmd);
+                                 proto_item_append_text(ti,", Frame: %d, Cmd: %x", isn_frame_length,
+                                                        isn_cmd);
+                                 proto_tree_add_item(isecnet_tree, hf_isn_cmd, tvb, offset,
+                                                     ISN_CMD_SZ, ENC_BIG_ENDIAN);
+                                 offset += ISN_CMD_SZ;
                         }
                } 
 	}
@@ -122,7 +125,7 @@ static int dissect_isecnet(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree, 
                offset++;
                isn_cmd = tvb_get_guint8(tvb, offset);
 
-               col_set_str(pinfo->cinfo, COL_INFO, try_val_to_str((guint32) isn_cmd, isn_cmd_names));
+               col_set_str(pinfo->cinfo, COL_INFO, val_to_str_const((guint32) isn_cmd, isn_cmd_names,UNKNOWN_STR));
                col_append_fstr(pinfo->cinfo, COL_INFO,", Frame=%d, Cmd=%X, Data=%d",isn_frame_length,isn_cmd,isn_data_length);
 
                if (tree) { /* we are being asked for details */
