@@ -2,3 +2,4 @@
 *.la
 .deps
 .libs
+Makefile
